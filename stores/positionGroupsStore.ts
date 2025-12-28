@@ -201,6 +201,25 @@ export const usePositionGroupsStore = defineStore('positionGroupsStore', {
       console.log("loadSpheres", this.spheres);
     },
 
+    async createGroup(params: {
+      name: string,
+      isArchived: boolean,
+      spheres: string[],
+    }) {
+      const nuxtApp = useNuxtApp();
+      const service = new PartnerZonesService(nuxtApp.$apiGateway as ApiGatewayClient);
+
+      await service.createPositionGroup({
+        name: params.name,
+        description: '',
+        isArchived: params.isArchived,
+        type: this.selectedTypePositions,
+        spheres: params.spheres,
+      });
+
+      await this.loadGroups();
+    },
+
     setSelectedTypePositions(type: PositionGroupType) {
       this.selectedTypePositions = type;
       this.loadGroups();

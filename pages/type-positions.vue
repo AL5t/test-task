@@ -1,20 +1,20 @@
 <template>
-    <UICard>
-      <TypePositionsTable />
-    </UICard>    
+  <UICard>
+    <TypePositionsTable />
+    <AddPositionGroupDialog />
+  </UICard>
 </template>
 
 <script setup lang="ts">
 import TypePositionsTable from '@/components/UI/typePositions/TypePositionsTable.vue';
 import { usePositionGroupsStore } from '@/stores/positionGroupsStore';
+import AddPositionGroupDialog from '@/components/UI/typePositions/AddPositionGroupDialog.vue';
 
 const PositionGroupStore = usePositionGroupsStore();
 
 onBeforeMount(async () => {
-  console.log(123);
   await PositionGroupStore.loadSpheres();
   await PositionGroupStore.loadGroups();
-  console.log(456);  
 });
 </script>
 
