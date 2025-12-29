@@ -39,7 +39,7 @@
               color="primary"
             ></v-switch>
           </div>
-          <UIButton variant="secondary" type="submit" class="submit-button" :disabled="!meta.valid">Сохранить</UIButton>
+          <UIButton variant="primary" type="submit" class="submit-button" :disabled="!meta.valid">Сохранить</UIButton>
         </div>
       </form>
   </UISimpleDrawer>

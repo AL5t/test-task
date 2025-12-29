@@ -54,7 +54,7 @@
         :columns="visibleColumns"
         item-key="id"
         :loading="PositionGroupStore.loadingTable"
-        style="border-radius: 8px; overflow: hidden;"
+        class="table"
       >
         <template #cell.sphereIds="{ item }">
             <span>{{ item.sphereIds.map((item: string) => sphereOptions.find(sph => sph.value === item)?.title).join(', ') }}</span>
@@ -155,18 +155,10 @@ onMounted(loadColumns);
         font-size: 14px;
       }
     }
-  }
 
-  .tags {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-
-    .tag {
-      background-color: #a4c7f3;
-      padding: 2px 4px;
+    .table {
       border-radius: 8px;
-      font-size: 10px;
+      overflow: hidden;
     }
   }
 </style>
