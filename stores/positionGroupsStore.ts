@@ -61,19 +61,16 @@ export const usePositionGroupsStore = defineStore('positionGroupsStore', {
         showArchived: false
       });
 
-      const result = JSON.parse(response.response);
-      console.log("loadGroups", result);
-
       //временное решение, т.к. приходит ответ со свойствами в верхнем регистре
-      if(result.Groups.length) {
-        for(let group of result.Groups) {
+      if(response.Groups.length) {
+        for(let group of response.Groups) {
           for(let key in group) {
             group[key[0].toLowerCase() + key.slice(1)] = group[key];
           }
         }
       }
 
-      this.groups = result.Groups;
+      this.groups = response.Groups;
       this.loadingTable = false;
     },
 
@@ -81,10 +78,7 @@ export const usePositionGroupsStore = defineStore('positionGroupsStore', {
       const nuxtApp = useNuxtApp();
       const service = new PartnerZonesService(nuxtApp.$apiGateway as ApiGatewayClient);
 
-      const response = await service.getSpheres({id: null, isArchive: false});
-
-      this.spheres = JSON.parse(response.response);
-      console.log("loadSpheres", this.spheres);
+      this.spheres = await service.getSpheres({id: null, isArchive: false});
     },
 
     async createGroup(params: {
@@ -101,17 +95,17 @@ export const usePositionGroupsStore = defineStore('positionGroupsStore', {
         isArchived: params.isArchived,
         type: this.selectedTypePositions,
         spheres: params.spheres,
-      }).then(response => {
-
+      }).then((response) => {
+        console.log('create', response);
         // временное решение, т.к. пока нет метода для получения всех PositionGroups, поэтому новые сохраняю в localStorage
-        if(response.response) {
+        if(response) {
           const positionGroupsFromLocalStorage = localStorage.getItem('position-groups');
           let newPositionGroups = [];
           if(positionGroupsFromLocalStorage) {
             newPositionGroups = JSON.parse(positionGroupsFromLocalStorage);
-            newPositionGroups.push(JSON.parse(response.response));
+            newPositionGroups.push(response);
           } else {
-            newPositionGroups.push(JSON.parse(response.response));
+            newPositionGroups.push(response);
           }
           localStorage.setItem('position-groups', JSON.stringify(newPositionGroups));
         }

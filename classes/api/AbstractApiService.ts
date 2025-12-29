@@ -64,6 +64,10 @@ export abstract class AbstractApiService {
       throw new ApiError(errorData);
     }
 
+    if(typeof response.responseBody?.response === 'string') {
+      return JSON.parse(response.responseBody.response) as T;
+    }
+
     // Возвращаем тело ответа
     return response.responseBody as T;
   }

@@ -1,6 +1,7 @@
 <template>
   <UICard>
-    <TypePositionsTable />
+    <TypePositionsSkeleton v-if="loading" />
+    <TypePositionsTable v-else />
     <AddPositionGroupDialog />
   </UICard>
 </template>
@@ -9,20 +10,14 @@
 import TypePositionsTable from '@/components/UI/typePositions/TypePositionsTable.vue';
 import { usePositionGroupsStore } from '@/stores/positionGroupsStore';
 import AddPositionGroupDialog from '@/components/UI/typePositions/AddPositionGroupDialog.vue';
+import TypePositionsSkeleton from '@/components/UI/typePositions/TypePositionsSkeleton.vue';
 
 const PositionGroupStore = usePositionGroupsStore();
+const loading = ref(true);
 
 onBeforeMount(async () => {
   await PositionGroupStore.loadSpheres();
   await PositionGroupStore.loadGroups();
+  loading.value = false;
 });
 </script>
-
-<style scoped>
-  .toolbar {
-    display: flex;
-  }
-  .filters { 
-    display: flex;
-  }
-</style>

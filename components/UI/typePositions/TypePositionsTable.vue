@@ -120,7 +120,6 @@ onMounted(loadColumns);
         height: 46px;
         padding: 20px 0 0 0;
       }
-
       :deep(.v-label) {
         font-size: 1rem;
       }
@@ -146,7 +145,6 @@ onMounted(loadColumns);
     display: flex;
     flex-direction: column;
     gap: 20px;
-
 
     .tabs {
       display: flex;
