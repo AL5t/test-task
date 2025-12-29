@@ -5,6 +5,7 @@
 
 import type { ApiGatewayClient } from "@/types/api";
 import { ApiError } from "@/types/api";
+import { keysToCamelCase } from "@/utils/case-mapper";
 
 /**
  * Абстрактный базовый класс для всех API сервисов
@@ -27,6 +28,7 @@ export abstract class AbstractApiService {
     method: string,
     body?: any,
     serviceName?: string,
+    disableAutoCamelCase?: boolean
   ): Promise<T> {
     // Получаем имя сервиса из параметра или из наследника
     const service = serviceName || this.getServiceName();
@@ -64,12 +66,21 @@ export abstract class AbstractApiService {
       throw new ApiError(errorData);
     }
 
-    if(typeof response.responseBody?.response === 'string') {
-      return JSON.parse(response.responseBody.response) as T;
-    }
+    // если disableAutoCamelCase не отключен, то ответ (PascalCase) будет трансформироваться в camelCase
+    const normalizedResponse = disableAutoCamelCase 
+      ? this.defaultNormalizeResponse(response) 
+      : keysToCamelCase(this.defaultNormalizeResponse(response));
 
-    // Возвращаем тело ответа
-    return response.responseBody as T;
+    return normalizedResponse;
+  }
+
+  // Для определения правильного тела ответа и его парсинг
+  protected defaultNormalizeResponse(response: any) {
+    let responseBody = response?.responseBody?.response ?? response?.responseBody ?? response;
+    if(typeof responseBody === 'string') {
+      responseBody = JSON.parse(responseBody);
+    }
+    return responseBody;
   }
 
   /**

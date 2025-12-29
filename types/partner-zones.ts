@@ -27,7 +27,7 @@ export interface PositionGroup {
  * Запрос на получение групп позиций
  */
 export interface GetPositionGroupsWebRequest {
-  ids: string[];
+  ids: string[] | null;
   type: PositionGroupType;
   showArchived: boolean;
 }
