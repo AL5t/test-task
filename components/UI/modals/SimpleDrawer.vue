@@ -53,7 +53,7 @@
 				</div>
 
 				<!-- Футер для десктопа -->
-				<div class="drawer-footer">
+				<div v-if="footer" class="drawer-footer">
 					<slot name="footer" />
 				</div>
 			</div>
@@ -113,7 +113,7 @@
 			</div>
 
 			<!-- Футер с кнопками -->
-			<div class="mobile-drawer__footer">
+			<div v-if="footer" class="mobile-drawer__footer">
 				<slot name="footer" />
 			</div>
 		</v-card>
@@ -167,6 +167,10 @@ const props = defineProps({
 	errorText: {
 		type: [String, Array],
 		default: null,
+	},
+	footer: {
+		type: Boolean,
+		default: false,
 	},
 });
 
