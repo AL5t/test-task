@@ -1,13 +1,12 @@
 <template>
   <UISimpleDrawer
-    :modelValue="PositionGroupStore.isVisibleDialogForAdding"
-    title="Добавление типа оборудования"
+    v-model="PositionGroupStore.isVisibleDialogForAdding"
+    :title="
+      `Добавление типа ${PositionGroupStore.selectedTypePositions === PositionGroupType.eqip ? 'оборудования' : 'услуги'}`
+    "
     :width="460"
     scrim
-    @update:modelValue="
-      PositionGroupStore.toggleDialogForAdding();
-      resetForm();
-    "
+    @update:model-value="resetForm()"
   >
       <form
         @submit.prevent="onSubmit"
@@ -50,6 +49,7 @@
 import { usePositionGroupsStore } from '@/stores/positionGroupsStore';
 import { useForm } from 'vee-validate';
 import { PositionGroupSchema } from '@/schemas/positionGroups.schema';
+import { PositionGroupType } from '@/types/partner-zones';
 
 const PositionGroupStore = usePositionGroupsStore();
 

@@ -16,22 +16,26 @@
             :items="sphereOptions"
             itemTitle="title"
 			      itemValue="value"
-            :withCheckboxes="true"
-            label="Cфера"
-            :multiple="true"
+            withCheckboxes
+            label="Cферы"
+            multiple
             clearable
-            :enableSelectAll="true"
+            enableSelectAll
             selectAllValue="all"
-            selectionLabelAll='Все'
+            multipleSelectionLabelMode="none"
           />
         </div>
       </div>
       <div class="buttons">
         <UIButton variant="secondary" type="button">
-          <UIIcon icon="mdi-eye" size="sm" :clickable="false"></UIIcon>
+          <UIIcon icon="mdi-eye-off" size="sm" :clickable="false"></UIIcon>
         </UIButton>
-        <UIButton variant="secondary" type="button" icon="mdi-information">D</UIButton>
-        <UIButton variant="secondary" type="button" @click="PositionGroupStore.toggleDialogForAdding">A</UIButton>
+        <UIButton variant="secondary" type="button" icon="mdi-information">
+          <UIIcon icon="mdi-tray-arrow-down" size="sm" :clickable="false"></UIIcon>
+        </UIButton>
+        <UIButton variant="secondary" type="button" @click="PositionGroupStore.toggleDialogForAdding">
+          <UIIcon icon="mdi-plus" size="sm" :clickable="false"></UIIcon>
+        </UIButton>
       </div>
     </div>
     <div class="table-content">
@@ -76,11 +80,12 @@ const DEFAULT_COLUMNS: Column[] = [
   { id: 'sphereIds', key: 'sphereIds', title: 'Сферы', visible: true },
   { id: 'archived', key: 'archived', title: 'Статус', visible: true }
 ];
-const { visibleColumns } = useTableColumns(DEFAULT_COLUMNS, { storageKey: 'typePositions.columns.v1' });
+const { visibleColumns, loadColumns } = useTableColumns(DEFAULT_COLUMNS, { storageKey: 'typePositions.columns.v1' });
 
 const rows = computed(() => PositionGroupStore.filtredGroups);
 const sphereOptions = computed(() => PositionGroupStore.sphereOptions);
 
+onMounted(loadColumns);
 </script>
 
 <style lang="scss" scoped>
@@ -97,7 +102,6 @@ const sphereOptions = computed(() => PositionGroupStore.sphereOptions);
 
       button {
         width: 36px;
-        height: 36px;
         padding: 8px 0;
       }
     }
@@ -114,13 +118,26 @@ const sphereOptions = computed(() => PositionGroupStore.sphereOptions);
       :deep(.v-field__input) {
         min-height: 20px;
         height: 46px;
-        padding: 0;
+        padding: 20px 0 0 0;
+      }
+
+      :deep(.v-label) {
+        font-size: 1rem;
+      }
+      :deep(.v-label.v-field-label--floating) {
+        font-size: 0.75rem;
       }
     }
 
     .select-field {
       width: 240px;
       height: 48px;
+
+      :deep(.v-select__selection) {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
     }
   }
 
